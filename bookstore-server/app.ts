@@ -1,6 +1,6 @@
-import express, { Application, Request, Response, NextFunction} from 'express'
+import express, { Application, Request, Response, NextFunction } from 'express'
 import bodyParser from 'body-parser'
-
+import ErrorMessage from './src/utils/errorMessage'
 
 //controllers
 
@@ -10,11 +10,16 @@ app.use(bodyParser.json())
 app.use(bodyParser.urlencoded({ extended: true }))
 
 
-app.post("/book") 
+app.post("/book")
 app.post("/publisher")
 
-app.get("/", async (req: Request, res: Response): Promise<Response> => {
-    return res.status(200).send("Hello world")
+app.get("/", async (req: Request, res: Response, next: NextFunction): Promise<Response> => {
+    try {
+        return res.status(200).send("Hello world")
+    } catch (e) {
+        ErrorMessage("App crashed ")
+    }
+    return res.send("I'm broken")
 })
 
 try {
