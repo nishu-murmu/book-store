@@ -5,7 +5,10 @@ const styles = {
   global: (props) => ({
     body: {
       bg: mode('#234E52', '#B2F5EA')(props),
-      color: mode('white', 'black')(props)
+      color: mode('white', 'black')(props),
+    },
+    button: {
+      colorScheme: mode('teal.700', 'teal.200')(props),
     },
   }),
 }

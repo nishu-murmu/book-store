@@ -1,6 +1,5 @@
 import express, { Application, Request, Response, NextFunction } from 'express'
 import bodyParser from 'body-parser'
-import ErrorMessage from './src/utils/errorMessage'
 
 //controllers
 import BookController from './src/controllers/book'
@@ -12,14 +11,17 @@ app.use(bodyParser.json())
 app.use(bodyParser.urlencoded({ extended: true }))
 
 
-app.post("/book", BookController)
-app.post("/publisher", PublisherController)
+// app.post("/book", BookController)
+app.get("/book", (req: Request, res: Response) => {
+    res.send("books api done")
+})
+// app.post("/publisher", PublisherController)
 
 app.get("/", async (req: Request, res: Response, next: NextFunction): Promise<Response> => {
     try {
         return res.status(200).send("Hello world")
     } catch (e) {
-        ErrorMessage("App crashed ")
+        next(e)
     }
     return res.send("I'm broken")
 })

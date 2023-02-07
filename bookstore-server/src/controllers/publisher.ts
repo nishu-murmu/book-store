@@ -3,7 +3,7 @@ import PublisherModel from '../models/bookModel'
 import validator from '../utils/validator'
 
 const PublisherController = async (req: Request, res: Response, next: NextFunction) => {
-    const { publishername, address} = req.body
+    const { publishername, address } = req.body
     try {
         const newPublisher = new PublisherModel({
             publisherName: publishername,
