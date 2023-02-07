@@ -3,6 +3,8 @@ import bodyParser from 'body-parser'
 import ErrorMessage from './src/utils/errorMessage'
 
 //controllers
+import BookController from './src/controllers/book'
+import PublisherController from './src/controllers/publisher'
 
 const app: Application = express()
 
@@ -10,8 +12,8 @@ app.use(bodyParser.json())
 app.use(bodyParser.urlencoded({ extended: true }))
 
 
-app.post("/book")
-app.post("/publisher")
+app.post("/book", BookController)
+app.post("/publisher", PublisherController)
 
 app.get("/", async (req: Request, res: Response, next: NextFunction): Promise<Response> => {
     try {
