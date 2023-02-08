@@ -11,6 +11,7 @@ import {
     TableContainer,
 } from '@chakra-ui/react'
 import { FaTrash, FaEdit } from 'react-icons/fa'
+import { useState } from 'react'
 
 interface StaticProps {
     value?: string,
@@ -19,6 +20,7 @@ interface StaticProps {
 }
 
 export default function Home(props) {
+    const [] = useState([])
 
     return (
         <Container>
@@ -45,13 +47,13 @@ export default function Home(props) {
                     <Tbody>
                         {props.booksList.map((item: any) => (
                             <Tr>
-                                <Td textAlign={'center'}>
+                                <Td key={item.value} textAlign={'center'}>
                                     {item.value}
                                 </Td >
-                                <Td textAlign={'center'}>
+                                <Td key={item.value2} textAlign={'center'}>
                                     {item.value2}
                                 </Td>
-                                <Td textAlign={'center'}>
+                                <Td key={item.value3} textAlign={'center'}>
                                     {item.value3}
                                 </Td>
                                 <Td textAlign='center'><Button colorScheme={'teal'}><FaEdit /></Button></Td>

@@ -8,7 +8,6 @@ interface LayoutProps {
 
 const Main: React.FC<LayoutProps> = (props) => {
     const { toggleColorMode } = useColorMode()
-    console.log(props.heading, "heading")
     return (
         <Container mt={5}>
             <Center>
