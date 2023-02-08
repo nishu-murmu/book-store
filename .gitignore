@@ -102,3 +102,6 @@ dist
 
 # TernJS port file
 .tern-port
+
+# Adding .env files in sub directory
+server/.env
