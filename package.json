@@ -1,0 +1,16 @@
+{
+  "name": "book-store",
+  "version": "1.0.0",
+  "description": "Install book-store project",
+  "scripts": {
+    "install-all": "sh ./bin/install.sh",
+    "server": "cd server && npm run dev",
+    "client": "cd client && npm run dev",
+    "dev": "concurrently \"npm:server\" \"npm:client\""
+  },
+  "author": "Nishu (nishu-murmu)",
+  "license": "MIT",
+  "devDependencies": {
+    "concurrently": "^7.6.0"
+  }
+}
