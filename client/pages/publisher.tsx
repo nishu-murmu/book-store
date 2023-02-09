@@ -10,18 +10,17 @@ const Publisher: React.FC = () => {
     const addressRef = useRef<HTMLInputElement>(null)
 
 
-    const submitHandler = async () => {
+    const submitHandler = async (): Promise<void> => {
         const publisherDetails: object = {
             publisherName: publisherRef.current?.value,
             address: addressRef.current?.value
         }
-        const response = await fetch("http://localhost:5005/publisher/create", {
+        await fetch("http://localhost:5005/publisher/create", {
             method: 'POST',
             mode: 'cors',
             headers: { 'Content-Type': 'application/json' },
             body: JSON.stringify(publisherDetails)
         })
-        console.log(response)
     }
     return (<Container>
         <Layout heading='Add Publisher' />
