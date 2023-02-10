@@ -2,6 +2,7 @@ import { Button, HStack, Input, Container, Center, FormControl, FormLabel } from
 import { useRef, MouseEvent } from 'react'
 
 import Layout from "../components/layout/main"
+import {addBook} from '../utils/apiRoutes'
 
 
 const Book: React.FC = () => {
@@ -24,13 +25,8 @@ const Book: React.FC = () => {
             pricing: pricingRef.current?.value,
             ratings: ratingsRef.current?.value,
         }
+        addBook(bookdetails)
 
-        await fetch("http://localhost:5005/book/create", {
-            method: 'POST',
-            mode: 'cors',
-            headers: { 'Content-Type': 'application/json' },
-            body: JSON.stringify(bookdetails)
-        })
         resetInputs()
     }
     const resetInputs = () => {

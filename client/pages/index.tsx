@@ -9,10 +9,17 @@ import {
     Td,
     TableCaption,
     TableContainer,
+    Menu,
+    MenuButton,
+    MenuList,
+    MenuItem,
 } from '@chakra-ui/react'
 import { FaTrash } from 'react-icons/fa'
 import { useEffect, useState } from 'react'
 import CustomField from '../components/commonComponent/customField'
+import { getBooks, deleteBooks, filterBooks } from '../utils/apiRoutes'
+import { filterProps } from 'framer-motion'
+
 
 export default function Home() {
 
@@ -25,25 +32,25 @@ export default function Home() {
     }
 
     // Setting states
-    const [booksList, setBooksList] = useState<[]>([])
+    const [booksList, setBooksList] = useState<Array<bookDetails>>([])
     const [deleteBook, setDeleteBook] = useState<boolean>(false)
 
     //API calls
-    const deleteBookHandler = async (id: string): Promise<void> => {
-        console.log(id, "id")
-        await fetch("http://localhost:5005/book/delete", {
-            method: 'DELETE',
-            mode: 'cors',
-            headers: { "Content-Type": "application/json" },
-            body: JSON.stringify({ id })
-        })
+
+    const getBooksList = () => {
+        getBooks().then(res => setBooksList(res))
     }
-    const getBooksList = async (): Promise<Array<bookDetails>> => {
-        const response = await fetch("http://localhost:5005/book/get")
-        const result = await response.json()
-        setBooksList(result)
-        return result
-    }
+
+    const filterBooksHandler = (filter: string) => {
+        if(filter == 'pricing')
+        filterBooks({
+            filter: 'pricing'
+        }).then(res => setBooksList(res))
+        if(filter == "ratings")
+        filterBooks({
+            filter: 'ratings'
+        }).then(res => setBooksList(res))
+    } 
 
     //side Effects
     useEffect(() => {
@@ -60,6 +67,15 @@ export default function Home() {
             </Head>
             <Layout heading='Book Store' />
 
+            <Menu closeOnSelect={false}>
+                <MenuButton as={Button} colorScheme='teal'>
+                    Filters
+                </MenuButton>
+                <MenuList bgColor={'teal'} minWidth='240px'>
+                    <MenuItem  onClick={() => filterBooksHandler("pricing")} bgColor={'teal'}color={'white'}>Top 5 Expensive</MenuItem>
+                    <MenuItem bgColor={'teal'} onClick={() => filterBooksHandler("ratings")} color={'white'}>Top 5 Rated</MenuItem>
+                </MenuList>
+            </Menu>
             <TableContainer mt={10}>
                 <Table size={'sm'} colorScheme='teal'>
                     <TableCaption>List of Books</TableCaption>
@@ -83,7 +99,7 @@ export default function Home() {
                                 <CustomField field={"ratings"} id={item._id} value={item.ratings} />
 
                                 <Td textAlign='center'><Button onClick={() => {
-                                    deleteBookHandler(item._id)
+                                    deleteBooks(item._id)
                                     setDeleteBook(prev => !prev)
                                 }} colorScheme={'teal'}>
                                     <FaTrash color='red' />

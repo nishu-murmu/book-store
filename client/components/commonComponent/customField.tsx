@@ -5,35 +5,34 @@ import {
     EditableInput,
     EditablePreview,
 } from '@chakra-ui/react'
-
+import { updateBook } from '../../utils/apiRoutes'
 
 interface CustomFieldsProps {
-    value: string 
+    value: string
     id: string
     field: string
 }
 
+interface fieldProps {
+    id: string
+    updatedValue: string | undefined
+    field: string
+}
 const CustomField: React.FC<CustomFieldsProps> = (props) => {
 
 
     const InputRef = useRef<HTMLInputElement>(null)
 
-    const onChangeHandler = async():Promise<void> => {
 
-        console.log(InputRef.current?.value, "value")
-        await fetch(`http://localhost:5005/book/update`, {
-            method: 'PUT',
-            mode: 'cors',
-            headers: {"Content-Type":"application/json"},
-            body: JSON.stringify({
-                id: props.id,
-                updatedValue: InputRef.current?.value, 
-                field: props.field
-            })
-        })
-
-
+    const onChangeHandler = () => {
+        const params: fieldProps = {
+            id: props.id,
+            updatedValue: InputRef.current?.value,
+            field: props.field
+        }
+        updateBook(params)
     }
+
     return (
         <Td key={props.id}>
             <Editable textAlign='center' defaultValue={props.value}>
