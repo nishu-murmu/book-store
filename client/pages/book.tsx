@@ -1,5 +1,5 @@
 import { Button, HStack, Input, Container, Center, FormControl, FormLabel } from '@chakra-ui/react'
-import { useRef, MouseEvent} from 'react'
+import { useRef, MouseEvent } from 'react'
 
 import Layout from "../components/layout/main"
 
@@ -25,7 +25,6 @@ const Book: React.FC = () => {
             ratings: ratingsRef.current?.value,
         }
 
-        console.log(bookdetails, "details")
         await fetch("http://localhost:5005/book/create", {
             method: 'POST',
             mode: 'cors',
@@ -47,7 +46,7 @@ const Book: React.FC = () => {
                     <FormLabel htmlFor='bookname'>Book Name:</FormLabel>
                     <Input type={'text'} id={'bookname'} ref={bookNameRef} />
                     <FormLabel htmlFor='publishername'>Publisher Name:</FormLabel>
-                    <Input type={'text'} id={'publishername'} ref={publisherNameRef}/>
+                    <Input type={'text'} id={'publishername'} ref={publisherNameRef} />
                     <FormLabel htmlFor='author'>Author:</FormLabel>
                     <Input type={'text'} id={'author'} ref={authorRef} />
                     <FormLabel htmlFor='price'>Price ($):</FormLabel>

@@ -10,8 +10,9 @@ import {
     TableCaption,
     TableContainer,
 } from '@chakra-ui/react'
-import { FaTrash, FaEdit } from 'react-icons/fa'
+import { FaTrash } from 'react-icons/fa'
 import { useEffect, useState } from 'react'
+import CustomField from '../components/commonComponent/customField'
 
 export default function Home() {
 
@@ -24,6 +25,19 @@ export default function Home() {
     }
 
     const [booksList, setBooksList] = useState<[]>([])
+    const [deleteBook, setDeleteBook] = useState<boolean>(false)
+
+
+
+    const deleteBookHandler = async (id: string): Promise<void> => {
+        console.log(id, "id")
+        await fetch("http://localhost:5005/book/delete", {
+            method: 'DELETE',
+            mode: 'cors',
+            headers: { "Content-Type": "application/json" },
+            body: JSON.stringify({ id })
+        })
+    }
     useEffect(() => {
         (async (): Promise<Array<bookDetails>> => {
             const response = await fetch("http://localhost:5005/book/get")
@@ -32,7 +46,7 @@ export default function Home() {
             return result
         })()
 
-    }, [])
+    }, [deleteBook])
 
     return (
         <Container maxW={'900px'}>
@@ -54,27 +68,23 @@ export default function Home() {
                             <Th color={'white'} textAlign={'center'}>Publisher Name</Th>
                             <Th color={'white'} textAlign={'center'}>Pricing</Th>
                             <Th color={'white'} textAlign={'center'}>Ratings</Th>
-                            <Th color={'white'} textAlign={'center'}>Edit</Th>
                             <Th color={'white'} textAlign={'center'}>Delete</Th>
                         </Tr>
                     </Thead>
                     <Tbody>
                         {booksList.map((item: any) => (
                             <Tr>
-                                <Td key={item.BookName} textAlign={'center'}>
-                                    {item.bookName}
-                                </Td >
-                                <Td key={item.authName} textAlign={'center'}>
-                                    {item.author}
-                                </Td>
-                                <Td key={item.publisherName} textAlign={'center'}>
-                                    {item.publisherName}
-                                </Td>
-                                <Td>{item.pricing}</Td>
-                                <Td>{item.ratings}</Td>
-                                <Td textAlign='center'><Button colorScheme={'teal'}><FaEdit /></Button></Td>
-                                <Td textAlign='center'><Button >
-                                    <FaTrash />
+                                <CustomField field={"bookName"} id={item._id} value={item.bookName} />
+                                <CustomField field={"author"} id={item._id} value={item.author} />
+                                <CustomField field={"publisherName"} id={item._id} value={item.publisherName} />
+                                <CustomField field={"pricing"} id={item._id} value={item.pricing} />
+                                <CustomField field={"ratings"} id={item._id} value={item.ratings} />
+
+                                <Td textAlign='center'><Button onClick={() => {
+                                    deleteBookHandler(item._id)
+                                    setDeleteBook(prev => !prev)
+                                }} colorScheme={'teal'}>
+                                    <FaTrash color='red' />
                                 </Button></Td>
                             </Tr>
                         ))}
