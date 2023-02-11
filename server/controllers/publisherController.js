@@ -1,8 +1,7 @@
-import PublisherModel from '../models/publisherModel.js'
+import PublisherModel from "../models/publisherModel.js"
 
 export const addPublisher = async (req, res, next) => {
   try {
-    console.log(`${req.body}, body`)
     const { publisherName, address } = req.body
     const newpublisher = new PublisherModel({
       publisherName,
@@ -17,7 +16,10 @@ export const addPublisher = async (req, res, next) => {
 
 export const getPublisher = async (req, res, next) => {
   try {
-    return res.status(200).json()
+    const allPublishers = await PublisherModel.find()
+      .populate("booksList", "ratings pricing")
+      .exec()
+    res.status(200).json(allPublishers)
   } catch (err) {
     next(err)
   }

@@ -1,8 +1,10 @@
-import express from 'express'
-
+import express from "express"
 //files
-import {addPublisher, deletePublisher, getPublisher} from '../controllers/publisherController.js'
-
+import {
+  addPublisher,
+  deletePublisher,
+  getPublisher,
+} from "../controllers/publisherController.js"
 
 const router = express.Router()
 

@@ -1,4 +1,4 @@
-import mongoose from 'mongoose'
+import mongoose from "mongoose"
 
 const PublisherModel = mongoose.Schema({
   address: {
@@ -9,6 +9,12 @@ const PublisherModel = mongoose.Schema({
     type: String,
     required: true,
   },
+  booksList: [
+    {
+      type: mongoose.Schema.Types.ObjectId,
+      ref: "Book",
+    },
+  ],
 })
 
-export default mongoose.model('publisherInfo', PublisherModel)
+export default mongoose.model("Publisher", PublisherModel)
