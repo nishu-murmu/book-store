@@ -1,5 +1,7 @@
 import Head from 'next/head'
 import Layout from '../components/layout/main'
+import { useDispatch, useSelector } from 'react-redux'
+import { booksActions } from '../redux/reducers/BooksReducer.js'
 import {
     Container, Table, Button,
     Thead,
@@ -18,7 +20,6 @@ import { FaTrash } from 'react-icons/fa'
 import { useEffect, useState } from 'react'
 import CustomField from '../components/commonComponent/customField'
 import { getBooks, deleteBooks, filterBooks } from '../utils/apiRoutes'
-import { filterProps } from 'framer-motion'
 
 
 export default function Home() {
@@ -31,9 +32,18 @@ export default function Home() {
         ratings?: number
     }
 
+    type reduxState = {
+        deleteBook: boolean,
+        booksList?: [] 
+    }
     // Setting states
     const [booksList, setBooksList] = useState<Array<bookDetails>>([])
-    const [deleteBook, setDeleteBook] = useState<boolean>(false)
+    const deleteBook = useSelector((state: reduxState) => state.deleteBook)
+    const dispatch = useDispatch()
+
+    const deleteHandler = () => {
+        dispatch(booksActions.deleteBooks())
+    }
 
     //API calls
 
@@ -42,15 +52,15 @@ export default function Home() {
     }
 
     const filterBooksHandler = (filter: string) => {
-        if(filter == 'pricing')
-        filterBooks({
-            filter: 'pricing'
-        }).then(res => setBooksList(res))
-        if(filter == "ratings")
-        filterBooks({
-            filter: 'ratings'
-        }).then(res => setBooksList(res))
-    } 
+        if (filter == 'pricing')
+            filterBooks({
+                filter: 'pricing'
+            }).then(res => setBooksList(res))
+        if (filter == "ratings")
+            filterBooks({
+                filter: 'ratings'
+            }).then(res => setBooksList(res))
+    }
 
     //side Effects
     useEffect(() => {
@@ -72,7 +82,7 @@ export default function Home() {
                     Filters
                 </MenuButton>
                 <MenuList bgColor={'teal'} minWidth='240px'>
-                    <MenuItem  onClick={() => filterBooksHandler("pricing")} bgColor={'teal'}color={'white'}>Top 5 Expensive</MenuItem>
+                    <MenuItem onClick={() => filterBooksHandler("pricing")} bgColor={'teal'} color={'white'}>Top 5 Expensive</MenuItem>
                     <MenuItem bgColor={'teal'} onClick={() => filterBooksHandler("ratings")} color={'white'}>Top 5 Rated</MenuItem>
                 </MenuList>
             </Menu>
@@ -100,7 +110,7 @@ export default function Home() {
 
                                 <Td textAlign='center'><Button onClick={() => {
                                     deleteBooks(item._id)
-                                    setDeleteBook(prev => !prev)
+                                    deleteHandler()
                                 }} colorScheme={'teal'}>
                                     <FaTrash color='red' />
                                 </Button></Td>
